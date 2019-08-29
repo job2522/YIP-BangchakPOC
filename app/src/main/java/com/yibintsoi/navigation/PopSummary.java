@@ -1,6 +1,7 @@
 package com.yibintsoi.navigation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelStore;
 
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -34,10 +36,12 @@ import java.util.Map;
 
 public class PopSummary extends AppCompatActivity {
 
-//    String [] valveList = {"101","102","103"};
     public ArrayList<String> valveList = new ArrayList<>();
+    public ArrayList<String> valveStatusList = new ArrayList<>();
+
 //    private ArrayList<Boolean> valveStatusList = new ArrayList<>();
 //    TextView textViewValveID;
+    ListView listViewSummary;
     private Button closeBtn;
     private static final String TAG = PopValveList.class.getSimpleName();
 
@@ -46,17 +50,48 @@ public class PopSummary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_summary);
 
-//        ListView listViewSummary = (ListView)findViewById(R.id.summaryList);
-//        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.);
-        closeBtn = findViewById(R.id.close_btn);
+        //        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.);
 
-//        listViewSummary = findViewById(R.id.summaryList);
+
+        listViewSummary = (ListView)findViewById(R.id.summaryList);
+        closeBtn = findViewById(R.id.close_btn);
 
 
         createPopUp();
         createSummaryView();
     }
 
+    class MyAdapter extends ArrayAdapter<String>{
+        Context context;
+        ArrayList<String> valveNameAdapter;
+        ArrayList<String> valveStatusAdapter;
+
+        MyAdapter(Context c , ArrayList<String> valveNameAdapter, ArrayList<String> valveStatusAdapter){
+            super(c, R.layout.summary_list_row, R.id.valveIdSummary, valveNameAdapter);
+            this.context = c;
+            this.valveNameAdapter = valveNameAdapter;
+            this.valveStatusAdapter = valveStatusAdapter;
+        }
+
+        public View getView(int position, @Nullable View convertView,@NonNull ViewGroup parent){
+            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View row = layoutInflater.inflate(R.layout.summary_list_row, parent, false);
+            TextView myValveName = row.findViewById(R.id.valveIdSummary);
+            TextView myValveStatus = row.findViewById(R.id.valveStatus);
+
+            myValveName.setText("Valve : " + valveNameAdapter.get(position));
+
+            if (valveStatusAdapter.get(position).equals("true")){
+                myValveStatus.setText(": ON");
+            }else{
+                myValveStatus.setText(": OFF");
+            }
+
+
+            return row;
+        }
+
+    }
 
     public void createPopUp() {
         DisplayMetrics listPopUp = new DisplayMetrics();
@@ -96,9 +131,11 @@ public class PopSummary extends AppCompatActivity {
                 assert valveIdMap != null;
                 for (Map.Entry<Integer,Boolean> entry : valveIdMap.entrySet()){
                     valveList.add(String.valueOf(entry.getKey()));
-//                    valveStatusList.add(entry.getValue());
+                    valveStatusList.add(String.valueOf(entry.getValue()));
                 }
-                Log.d(TAG,"onEvent Key: " + valveList + " Valve: ");
+//                Log.d(TAG,"onEvent Key: " + valveList + " Valve: " + valveStatusList);
+                MyAdapter adapter = new MyAdapter(PopSummary.this, valveList, valveStatusList);
+                listViewSummary.setAdapter(adapter);
 //                CustomAdapter customAdapter = new CustomAdapter() ;
 //                customAdapter.notifyDataSetChanged();
 //                listViewSummary.setAdapter(customAdapter);

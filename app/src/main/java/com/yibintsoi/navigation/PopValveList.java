@@ -102,16 +102,13 @@ public class PopValveList extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 valveList.clear();
                 DocumentSnapshot test = task.getResult();
-//                Object test1 = test.get("valve_id");
-//                Log.d(TAG,"onEvent5555:" + test1);
+
                 Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) test.get("valve_id");
-                Log.d(TAG,"onEvent5555:" + valveIdMap);
                 for (Map.Entry<Integer,Boolean> entry : valveIdMap.entrySet()){
                     valveList.add(entry.getKey());
                 }
 
                 Collections.reverse(valveList);
-//                Log.d(TAG,"onEvent" + valveList);
                 ArrayAdapter<Object> adapter = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_selectable_list_item,valveList);
                 adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);
@@ -119,7 +116,6 @@ public class PopValveList extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int index, long length) {
-//                        Toast.makeText(PopValveList.this,"Select" + valveList.get(index),Toast.LENGTH_LONG).show();
                         saveValveID(Integer.valueOf(valveList.get(index).toString()));
                         finish();
                     }
@@ -128,7 +124,6 @@ public class PopValveList extends AppCompatActivity {
         });
     }
     public void saveValveID(Integer valveID){
-//        Toast.makeText(PopValveList.this,"Click tank ID " + valveID,Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
