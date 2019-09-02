@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class PopValveList extends AppCompatActivity {
     private ArrayList<Object> valveList = new ArrayList<>();
@@ -101,14 +102,18 @@ public class PopValveList extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 valveList.clear();
-                DocumentSnapshot test = task.getResult();
+                DocumentSnapshot document = task.getResult();
 
-                Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) test.get("valve_id");
-                for (Map.Entry<Integer,Boolean> entry : valveIdMap.entrySet()){
+                Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) document.get("valve_id");
+
+                TreeMap<Integer,Boolean> sortValveIdMap = new TreeMap<Integer,Boolean>();
+                sortValveIdMap.putAll(valveIdMap);
+
+                for (Map.Entry<Integer,Boolean> entry : sortValveIdMap.entrySet()){
                     valveList.add(entry.getKey());
                 }
 
-                Collections.reverse(valveList);
+//                Collections.reverse(valveList);
                 ArrayAdapter<Object> adapter = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_selectable_list_item,valveList);
                 adapter.notifyDataSetChanged();
                 listView.setAdapter(adapter);

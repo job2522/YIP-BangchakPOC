@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelStore;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.text.Edits;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,15 +25,22 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 //import java.util.Collections;
 //import java.util.HashMap;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class PopSummary extends AppCompatActivity {
 
@@ -118,18 +126,25 @@ public class PopSummary extends AppCompatActivity {
     }
 
     public void createSummaryView(){
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         SharedPreferences sharedPreferences = getSharedPreferences(PopTankList.SHARED_PREFS, MODE_PRIVATE);
         String tankSummary = sharedPreferences.getString("tank_name","100");
 
-        db.collection("Test").document(tankSummary).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef =  db.collection("Test").document(tankSummary);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
                 DocumentSnapshot document = task.getResult();
+                Object testSorting = document.get("valve_id");
+                Log.d(TAG,"onEvent document : " + testSorting);
+
                 Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) document.get("valve_id");
-                assert valveIdMap != null;
-                for (Map.Entry<Integer,Boolean> entry : valveIdMap.entrySet()){
+
+                TreeMap<Integer,Boolean> sortValveIdMap = new TreeMap<Integer,Boolean>();
+                sortValveIdMap.putAll(valveIdMap);
+
+                for (Map.Entry<Integer,Boolean> entry : sortValveIdMap.entrySet()){
                     valveList.add(String.valueOf(entry.getKey()));
                     valveStatusList.add(String.valueOf(entry.getValue()));
                 }
