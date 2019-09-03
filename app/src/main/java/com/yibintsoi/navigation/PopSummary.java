@@ -90,7 +90,7 @@ public class PopSummary extends AppCompatActivity {
         int width = listPopUp.widthPixels;
         int height = listPopUp.heightPixels;
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.7));
+        getWindow().setLayout((int)(width*.8), (int)(height*.65));
 
         WindowManager.LayoutParams params =  getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
@@ -118,8 +118,8 @@ public class PopSummary extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 DocumentSnapshot document = task.getResult();
-
                 Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) document.get("valve_id");
+
                 assert valveIdMap != null;
                 TreeMap<Integer, Boolean> sortValveIdMap = new TreeMap<>(valveIdMap);
 

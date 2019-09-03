@@ -37,7 +37,7 @@ public class PopTankList extends AppCompatActivity {
     private Button closeBtn;
     public ListView listView;
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TANK_ID = "tank_id";
+//    public static final String TANK_ID = "tank_id";
     public static final String TANK_NAME = "tank_name";
 
     @Override
@@ -58,7 +58,7 @@ public class PopTankList extends AppCompatActivity {
         int width = listPopUp.widthPixels;
         int height = listPopUp.heightPixels;
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.7));
+        getWindow().setLayout((int)(width*.8), (int)(height*.65));
 
         WindowManager.LayoutParams params =  getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
@@ -104,7 +104,7 @@ public class PopTankList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Editor editor = sharedPreferences.edit();
 
-        editor.putInt(TANK_ID, tankID);
+//        editor.putInt(TANK_ID, tankID);
         editor.putString(TANK_NAME, tankID.toString());
         editor.apply();
 

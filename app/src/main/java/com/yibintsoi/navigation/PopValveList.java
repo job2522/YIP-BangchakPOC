@@ -30,7 +30,7 @@ public class PopValveList extends AppCompatActivity {
     private ListView listView;
 
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String VALVE_ID = "valve_id";
+//    public static final String VALVE_ID = "valve_id";
     public static final String VALVE_NAME = "valve_name";
 
     @Override
@@ -52,7 +52,7 @@ public class PopValveList extends AppCompatActivity {
         int width = listPopUp.widthPixels;
         int height = listPopUp.heightPixels;
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.7));
+        getWindow().setLayout((int)(width*.8), (int)(height*.65));
 
         WindowManager.LayoutParams params =  getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
@@ -122,7 +122,7 @@ public class PopValveList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt(VALVE_ID, valveID);
+//        editor.putInt(VALVE_ID, valveID);
         editor.putString(VALVE_NAME, valveID.toString());
         editor.apply();
 
