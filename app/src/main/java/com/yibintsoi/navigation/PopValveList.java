@@ -2,13 +2,11 @@ package com.yibintsoi.navigation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,25 +14,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class PopValveList extends AppCompatActivity {
     private ArrayList<Object> valveList = new ArrayList<>();
-    private static final String TAG = PopValveList.class.getSimpleName();
+//    private static final String TAG = PopValveList.class.getSimpleName();
     private Button closeBtn;
     private ListView listView;
 
@@ -103,11 +94,10 @@ public class PopValveList extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 valveList.clear();
                 DocumentSnapshot document = task.getResult();
-
                 Map<Integer,Boolean> valveIdMap = (Map<Integer,Boolean>) document.get("valve_id");
 
-                TreeMap<Integer,Boolean> sortValveIdMap = new TreeMap<Integer,Boolean>();
-                sortValveIdMap.putAll(valveIdMap);
+                assert valveIdMap != null;
+                TreeMap<Integer, Boolean> sortValveIdMap = new TreeMap<>(valveIdMap);
 
                 for (Map.Entry<Integer,Boolean> entry : sortValveIdMap.entrySet()){
                     valveList.add(entry.getKey());

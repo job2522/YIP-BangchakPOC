@@ -101,7 +101,6 @@ public class PopTankList extends AppCompatActivity {
         });
     }
     public void saveTankID(Integer tankID){
-//        Toast.makeText(PopTankList.this,"Click tank ID " + tankID,Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Editor editor = sharedPreferences.edit();
 
